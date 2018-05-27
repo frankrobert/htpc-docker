@@ -12,12 +12,12 @@ Trying to make something that's as close as possible to a 1-click install.
   - [Jackett](https://hub.docker.com/r/linuxserver/jackett/)
   - [Cardigann](https://hub.docker.com/r/linuxserver/cardigann/)
   - [Ombi](https://hub.docker.com/r/linuxserver/ombi/)
+  - [Deluge + PIA](https://hub.docker.com/r/binhex/arch-delugevpn/)
 
 ## TODO/Missing services
-
-- [ ] PIA VPN automatically configured for Torrents
-- [ ] Deluge as torrent application
 - [ ] Create cross-platform overrides to allow this to work on Windows
+- [ ] Add Prometheus or Fluentd logging
+- [ ] Add a media manager to download trailers
 
 ### Contributing
 Feel free to open an issue or submit a PR if you have suggestions on services or improvements.
