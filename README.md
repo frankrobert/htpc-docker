@@ -15,9 +15,9 @@ Trying to make something that's as close as possible to a 1-click install.
 
 ## TODO/Missing services
 
-- [] PIA VPN automatically configured for Torrents
-- [] Deluge as torrent application
-- [] Create cross-platform overrides to allow this to work on Windows
+- [ ] PIA VPN automatically configured for Torrents
+- [ ] Deluge as torrent application
+- [ ] Create cross-platform overrides to allow this to work on Windows
 
 ### Contributing
 Feel free to open an issue or submit a PR if you have suggestions on services or improvements.
