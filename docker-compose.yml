@@ -28,7 +28,7 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /deluge:/config
-      # - <path-for-data>:/data
+      - /downloads:/data
     env_file:
       - pia.env
     labels:
@@ -67,8 +67,8 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /radarr:/config
-      # - <path-to-downloads>
-      # - <path-to-movies>
+      - /downloads:/downloads
+      - /movies:/movies
     ports:
       - 7878:7878
     labels:
@@ -83,8 +83,8 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /sonarr:/config
-      # - <path-to-downloads>
-      # - <path-to-shows>
+      - /downloads:/downloads
+      - /tv:/tv
     labels:
       - "traefik.backend=sonarr"
       - "traefik.frontend.rule=Host:sonarr.localhost"
@@ -133,9 +133,9 @@ services:
       - 32400:32400
     volumes:
       - /plex:/config
-      # - <path-to-movies>
-      # - <path-to-shows>
-      # - <path-to-transcoding>
+      - /movies:/data/movies
+      - /tc:/data/tvshows
+      - /transcoding:/transcode
     labels:
       - "traefik.backend=plex"
       - "traefik.frontend.rule=Host:plex.localhost"
