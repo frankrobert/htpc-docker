@@ -14,6 +14,28 @@ services:
       - "traefik.backend=traefik"
       - "traefik.frontend=traefik.localhost"
 
+  # Torrent application
+  deluge:
+    image: linuxserver/deluge
+    network_mode: container:pia
+    ports:
+      - 8112:8112
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /deluge:/config
+      # - <path-to-downloads>
+    labels:
+      - "traefik.backend=deluge"
+      - "traefik.frontend=deluge.localhost"
+  # VPN
+  pia:
+    image: colinhebert/pia-openvpn
+    env_file:
+      - pia.env
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun:/dev/net/tun
   # docker container manager
   portainer:
     image: portainer/portainer
