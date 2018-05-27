@@ -11,31 +11,31 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock # So that Traefik can listen to the Docker events
     labels:
+      - "traefik.port=8080"
       - "traefik.backend=traefik"
-      - "traefik.frontend=traefik.localhost"
+      - "traefik.frontend.rule=Host:traefik.localhost"
 
-  # Torrent application
+  # PIA + Deluge
   deluge:
-    image: linuxserver/deluge
-    network_mode: container:pia
+    image: binhex/arch-delugevpn
+    cap_add:
+      - NET_ADMIN
     ports:
       - 8112:8112
+      - 8118:8118
+      - 58846:58846
+      - 58946:58946
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /deluge:/config
-      # - <path-to-downloads>
-    labels:
-      - "traefik.backend=deluge"
-      - "traefik.frontend=deluge.localhost"
-  # VPN
-  pia:
-    image: colinhebert/pia-openvpn
+      # - <path-for-data>:/data
     env_file:
       - pia.env
-    cap_add:
-      - NET_ADMIN
-    devices:
-      - /dev/net/tun:/dev/net/tun
+    labels:
+      - "traefik.port=8112"
+      - "traefik.backend=deluge"
+      - "traefik.frontend.rule=Host:deluge.localhost"
+
   # docker container manager
   portainer:
     image: portainer/portainer
@@ -47,7 +47,7 @@ services:
       - portainer_data:/data
     labels:
       - "traefik.backend=portainer"
-      - "traefik.frontend=portainer.localhost"
+      - "traefik.frontend.rule=Host:portainer.localhost"
 
   # HTPC portal      
   organizr:
