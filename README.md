@@ -15,6 +15,7 @@ Trying to make something that's as close as possible to a 1-click install.
   - [Deluge + PIA](https://hub.docker.com/r/binhex/arch-delugevpn/)
 
 ## TODO/Missing services
+  > Note that Windows users can use WSL to avoid having to rebind paths and can simply symlink if needed
 - [ ] Create cross-platform overrides to allow this to work on Windows
 - [ ] Add Prometheus or Fluentd logging
 - [ ] Add a media manager to download trailers
