@@ -1,0 +1,128 @@
+version: "3.5"
+services:
+
+  # reverse proxy
+  traefik:
+    image: traefik # The official Traefik docker image
+    command: --api --docker # Enables the web UI and tells Træfik to listen to docker
+    ports:
+      - "80:80"     # The HTTP port
+      - "8080:8080" # The Web UI (enabled by --api)
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock # So that Traefik can listen to the Docker events
+    labels:
+      - "traefik.backend=traefik"
+      - "traefik.frontend=traefik.localhost"
+
+  # docker container manager
+  portainer:
+    image: portainer/portainer
+    command: -H unix:///var/run/docker.sock
+    ports:
+      - 9000:9000
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
+    labels:
+      - "traefik.backend=portainer"
+      - "traefik.frontend=portainer.localhost"
+
+  # HTPC portal      
+  organizr:
+    image: lsiocommunity/organizr
+    ports:
+      - 9001:80
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /organizr:/config
+    labels:
+      - "traefik.backend=dashboard"
+      - "traefik.frontend.rule=Host:dashboard.localhost"
+
+  # Movie download automation
+  radarr:
+    image: linuxserver/radarr
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /radarr:/config
+      # - <path-to-downloads>
+      # - <path-to-movies>
+    ports:
+      - 7878:7878
+    labels:
+      - "traefik.backend=radarr"
+      - "traefik.frontend.rule=Host:radarr.localhost"
+
+  # Television series download automation
+  sonarr:
+    image: linuxserver/sonarr
+    ports:
+      - 8989:8989
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /sonarr:/config
+      # - <path-to-downloads>
+      # - <path-to-shows>
+    labels:
+      - "traefik.backend=sonarr"
+      - "traefik.frontend.rule=Host:sonarr.localhost"
+
+  # Additional torrent indexers
+  jackett:
+    image: linuxserver/jackett
+    ports:
+      - 9117:9117
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /jackett:/config
+      # - <path-to-downloads-for-blackhole>
+    labels:
+      - "traefik.backend=jackett"
+      - "traefik.frontend.rule=Host:jackett.localhost"
+
+  # Additional torrent indexers pt2
+  cardigann:
+    image: linuxserver/cardigann
+    ports:
+      - 5060:5060
+    volumes:
+      - /jackett:/config
+    labels:
+      - "traefik.backend=cardigann"
+      - "traefik.frontend.rule=Host:cardigann.localhost"
+
+  # media request portal
+  ombi:
+    image: linuxserver/ombi
+    ports:
+      - 3579:3579
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /ombi:/config
+    labels:
+      - "traefik.backend=ombi"
+      - "traefik.frontend.rule=Host:ombi.localhost"
+
+  # video transcoding and media player/host
+  plex:
+    image: linuxserver/plex
+    network_mode: host
+    ports:
+      - 32400:32400
+    volumes:
+      - /plex:/config
+      # - <path-to-movies>
+      # - <path-to-shows>
+      # - <path-to-transcoding>
+    labels:
+      - "traefik.backend=plex"
+      - "traefik.frontend.rule=Host:plex.localhost"
+
+volumes:
+  portainer_data:
+
+networks:
+  default:
+    external:
+      name: htpc-net
+
