@@ -27,8 +27,8 @@ services:
       - 58946:58946
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - /deluge:/config
-      - /downloads:/data
+      - ~/deluge:/config
+      - ~/Downloads:/data
     env_file:
       - pia.env
     labels:
@@ -56,7 +56,7 @@ services:
       - 9001:80
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - /organizr:/config
+      - ~/organizr:/config
     labels:
       - "traefik.backend=dashboard"
       - "traefik.frontend.rule=Host:dashboard.localhost"
@@ -66,9 +66,9 @@ services:
     image: linuxserver/radarr
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - /radarr:/config
-      - /downloads:/downloads
-      - /movies:/movies
+      - ~/radarr:/config
+      - ~/Downloads:/downloads
+      - ~/movies:/movies
     ports:
       - 7878:7878
     labels:
@@ -82,9 +82,9 @@ services:
       - 8989:8989
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - /sonarr:/config
-      - /downloads:/downloads
-      - /tv:/tv
+      - ~/sonarr:/config
+      - ~/Downloads:/downloads
+      - ~/tv:/tv
     labels:
       - "traefik.backend=sonarr"
       - "traefik.frontend.rule=Host:sonarr.localhost"
@@ -96,7 +96,7 @@ services:
       - 9117:9117
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - /jackett:/config
+      - ~/jackett:/config
       # - <path-to-downloads-for-blackhole>
     labels:
       - "traefik.backend=jackett"
@@ -108,7 +108,7 @@ services:
     ports:
       - 5060:5060
     volumes:
-      - /jackett:/config
+      - ~/cardigann:/config
     labels:
       - "traefik.backend=cardigann"
       - "traefik.frontend.rule=Host:cardigann.localhost"
@@ -120,7 +120,7 @@ services:
       - 3579:3579
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - /ombi:/config
+      - ~/ombi:/config
     labels:
       - "traefik.backend=ombi"
       - "traefik.frontend.rule=Host:ombi.localhost"
@@ -132,10 +132,10 @@ services:
     ports:
       - 32400:32400
     volumes:
-      - /plex:/config
-      - /movies:/data/movies
-      - /tc:/data/tvshows
-      - /transcoding:/transcode
+      - ~/plex:/config
+      - ~/movies:/data/movies
+      - ~/tv:/data/tvshows
+      - ~/transcoding:/transcode
     labels:
       - "traefik.backend=plex"
       - "traefik.frontend.rule=Host:plex.localhost"
